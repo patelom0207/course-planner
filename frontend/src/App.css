@@ -1,42 +1,96 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.app {
+  min-height: 100vh;
+  background: #f5f7fa;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-header {
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+  color: #13294B;
+  font-weight: 600;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-header nav {
+  display: flex;
+  gap: 1rem;
 }
 
-.card {
-  padding: 2em;
+.app-header nav button {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-weight: 500;
 }
 
-.read-the-docs {
-  color: #888;
+.app-header nav button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.app-header nav button.active {
+  background: #13294B;
+  color: white;
+}
+
+.app-main {
+  min-height: calc(100vh - 120px);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.btn-primary {
+  padding: 0.6rem 1.2rem;
+  background: #13294B;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+  font-weight: 500;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0f1f36;
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 0.6rem 1.2rem;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.btn-secondary:hover {
+  background: #f5f5f5;
+  border-color: #999;
 }
