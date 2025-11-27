@@ -1,0 +1,176 @@
+.semester-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.semester-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.semester-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.semester-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #ffebee;
+  color: #e53935;
+}
+
+.semester-credits {
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.courses-list {
+  margin-bottom: 1rem;
+  min-height: 100px;
+}
+
+.no-courses {
+  text-align: center;
+  color: #999;
+  padding: 2rem 0;
+  font-style: italic;
+}
+
+.course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: #fafafa;
+  border-left: 4px solid #4A90E2;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.course-item:hover {
+  background: #f0f0f0;
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.course-header-row strong {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.course-credits {
+  font-size: 0.85rem;
+  color: #666;
+  background: #e8e8e8;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+}
+
+.course-title {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.course-description {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+.prerequisites-warning {
+  font-size: 0.85rem;
+  color: #e65100;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: #fff3e0;
+  border-radius: 3px;
+}
+
+.btn-remove {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.btn-remove:hover {
+  background: #ffebee;
+  border-color: #e53935;
+  color: #e53935;
+}
+
+.semester-actions {
+  margin-top: 1rem;
+}
+
+.add-course-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.course-select {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.course-select:focus {
+  outline: none;
+  border-color: #4A90E2;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-actions button {
+  flex: 1;
+}
