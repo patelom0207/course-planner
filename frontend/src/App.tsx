@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Course, Semester } from './types';
 import { api } from './api';
+import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import CourseCatalog from './components/CourseCatalog';
 import './App.css';
@@ -75,29 +76,21 @@ function App() {
     }
   };
 
+  const handleLogin = () => {
+    alert('Login functionality coming soon!');
+  };
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>UIUC Course Planner</h1>
-        <nav>
-          <button
-            className={activeView === 'dashboard' ? 'active' : ''}
-            onClick={() => setActiveView('dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            className={activeView === 'catalog' ? 'active' : ''}
-            onClick={() => setActiveView('catalog')}
-          >
-            Course Catalog
-          </button>
-        </nav>
-      </header>
+      <Navbar
+        activeView={activeView}
+        onNavigate={setActiveView}
+        onLogin={handleLogin}
+      />
 
       <main className="app-main">
         {activeView === 'dashboard' ? (

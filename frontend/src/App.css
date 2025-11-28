@@ -3,49 +3,8 @@
   background: #f5f7fa;
 }
 
-.app-header {
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.app-header h1 {
-  margin: 0 0 1rem 0;
-  font-size: 2rem;
-  color: #13294B;
-  font-weight: 600;
-}
-
-.app-header nav {
-  display: flex;
-  gap: 1rem;
-}
-
-.app-header nav button {
-  padding: 0.6rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: #666;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-  font-weight: 500;
-}
-
-.app-header nav button:hover {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.app-header nav button.active {
-  background: #13294B;
-  color: white;
-}
-
 .app-main {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 105px);
 }
 
 .loading {
@@ -54,7 +13,8 @@
   align-items: center;
   height: 100vh;
   font-size: 1.5rem;
-  color: #666;
+  color: #edf0f1;
+  background: #24252A;
 }
 
 .btn-primary {

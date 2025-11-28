@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+  background-color: #24252A;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #FF5F05;
+  letter-spacing: 1px;
+}
+
+.logo-subtext {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #edf0f1;
+  margin-top: -4px;
+}
+
+.logo:hover {
+  transition: all 0.3s ease 0s;
+  transform: scale(1.05);
+}
+
+.nav_links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav_links li {
+  display: inline-block;
+  padding: 0px 20px;
+}
+
+.nav_links li a {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover {
+  color: #0088a9;
+}
+
+.nav_links li a.active {
+  color: #0088a9;
+  border-bottom: 2px solid #0088a9;
+  padding-bottom: 4px;
+}
+
+header button {
+  padding: 9px 25px;
+  background-color: rgba(0, 136, 169, 1);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+header button:hover {
+  background-color: rgba(0, 136, 169, 0.8);
+}
+
+header button a.cta {
+  color: #edf0f1;
+  text-decoration: none;
+  cursor: pointer;
+}
