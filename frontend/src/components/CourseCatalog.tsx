@@ -16,15 +16,22 @@ function CourseCatalog({ courses, departments, semesters, onAddCourse }: CourseC
   const [addingCourse, setAddingCourse] = useState<string | null>(null);
   const [selectedSemester, setSelectedSemester] = useState<number | ''>('');
 
-  const filteredCourses = courses.filter((course) => {
+  // Show courses if department is selected OR if user is searching
+  const filteredCourses = (selectedDept || searchTerm) ? courses.filter((course) => {
     const matchesDept = !selectedDept || course.department === selectedDept;
     const matchesLevel = !selectedLevel || course.level === selectedLevel;
+
+    // Remove spaces from both search term and course data for matching
+    const normalizedSearch = searchTerm.toLowerCase().replace(/\s+/g, '');
+    const normalizedCourseId = course.course_id.toLowerCase().replace(/\s+/g, '');
+    const normalizedTitle = course.title.toLowerCase();
+
     const matchesSearch = !searchTerm ||
-      course.course_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.title.toLowerCase().includes(searchTerm.toLowerCase());
+      normalizedCourseId.includes(normalizedSearch) ||
+      normalizedTitle.includes(searchTerm.toLowerCase());
 
     return matchesDept && matchesLevel && matchesSearch;
-  });
+  }) : [];
 
   const handleAddCourse = (courseId: string) => {
     if (selectedSemester) {
@@ -49,7 +56,7 @@ function CourseCatalog({ courses, departments, semesters, onAddCourse }: CourseC
   return (
     <div className="course-catalog">
       <div className="catalog-header">
-        <h2>Course Catalog ({courses.length} total courses, {filteredCourses.length} shown)</h2>
+        <h2>Course Catalog {selectedDept && `- ${selectedDept} (${filteredCourses.length} courses)`}</h2>
         <div className="filters">
           <input
             type="text"
@@ -64,7 +71,7 @@ function CourseCatalog({ courses, departments, semesters, onAddCourse }: CourseC
             onChange={(e) => setSelectedDept(e.target.value)}
             className="filter-select"
           >
-            <option value="">All Departments</option>
+            <option value="">Select a department...</option>
             {departments.map((dept) => (
               <option key={dept} value={dept}>{dept}</option>
             ))}
@@ -85,7 +92,9 @@ function CourseCatalog({ courses, departments, semesters, onAddCourse }: CourseC
       </div>
 
       <div className="courses-grid">
-        {filteredCourses.length === 0 ? (
+        {!selectedDept && !searchTerm ? (
+          <p className="no-results">Please select a department or start searching to view courses.</p>
+        ) : filteredCourses.length === 0 ? (
           <p className="no-results">No courses found matching your criteria.</p>
         ) : (
           filteredCourses.map((course) => (

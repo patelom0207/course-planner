@@ -23,8 +23,22 @@ def fetch_uiuc_courses():
     year = "2025"
     semester = "fall"
 
-    # List of popular departments to fetch
-    departments = ["CS", "MATH", "PHYS", "ECE", "STAT", "CHEM", "BIO", "ECON", "PSYC", "ENG"]
+    # List of all major departments to fetch from UIUC
+    departments = [
+        "ACCY", "ACES", "ACE", "AFAS", "AFRO", "AFST", "AGCM", "AGED", "ANSC", "ANTH",
+        "ARAB", "ARCH", "ARTD", "ARTE", "ARTF", "ARTH", "ARTS", "ASRM", "ASTR", "ATMS",
+        "BADM", "BIOC", "BIOE", "BIO", "BTRY", "BTW", "CEE", "CHBE", "CHEM", "CHIN",
+        "CHP", "CI", "CMN", "CPSC", "CROP", "CS", "CSE", "CW", "CWL", "DANC",
+        "EALC", "ECON", "EDPR", "EIL", "EPOL", "EPS", "ESE", "EURO", "FAA", "FIN",
+        "FLTE", "FR", "FSE", "FSHN", "GEOG", "GER", "GLBL", "GRK", "GWS", "HDFS",
+        "HEBR", "HIST", "HN", "HUM", "IB", "IE", "INFO", "IS", "ITAL", "JAPN",
+        "JOUR", "JS", "KOR", "LA", "LAS", "LAST", "LAT", "LAW", "LER", "LGLS",
+        "LING", "LLS", "MATH", "MBA", "MCB", "MDIA", "ME", "MILS", "MSE", "MUS",
+        "NEUR", "NPRE", "NRES", "NS", "PATH", "PHIL", "PHYS", "PLPA", "POL", "PORT",
+        "PS", "PSYC", "REES", "RHET", "RLST", "RST", "RUSS", "SBC", "SCAN", "SE",
+        "SLAV", "SOC", "SOCW", "SPAN", "SPED", "STAT", "TE", "THEA", "TRST", "TSM",
+        "UP", "VCM", "VM", "WLOF", "WRIT", "YDSH", "ECE", "ENG"
+    ]
 
     print(f"Fetching courses from UIUC Course Explorer API for {semester} {year}...")
 
