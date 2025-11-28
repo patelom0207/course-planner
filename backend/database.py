@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base, Course
 import requests
 import xml.etree.ElementTree as ET
+import time
 
 DATABASE_URL = "sqlite:///./course_planner.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
@@ -19,25 +20,25 @@ def fetch_uiuc_courses():
     """Fetch courses from UIUC Course Explorer API"""
     courses = []
 
-    # Use current year and fall semester
-    year = "2025"
-    semester = "fall"
+    # Use current year and spring semester
+    year = "2026"
+    semester = "spring"
 
-    # List of all major departments to fetch from UIUC
+    # List of engineering and relevant departments to fetch from UIUC
     departments = [
-        "ACCY", "ACES", "ACE", "AFAS", "AFRO", "AFST", "AGCM", "AGED", "ANSC", "ANTH",
-        "ARAB", "ARCH", "ARTD", "ARTE", "ARTF", "ARTH", "ARTS", "ASRM", "ASTR", "ATMS",
-        "BADM", "BIOC", "BIOE", "BIO", "BTRY", "BTW", "CEE", "CHBE", "CHEM", "CHIN",
-        "CHP", "CI", "CMN", "CPSC", "CROP", "CS", "CSE", "CW", "CWL", "DANC",
-        "EALC", "ECON", "EDPR", "EIL", "EPOL", "EPS", "ESE", "EURO", "FAA", "FIN",
-        "FLTE", "FR", "FSE", "FSHN", "GEOG", "GER", "GLBL", "GRK", "GWS", "HDFS",
-        "HEBR", "HIST", "HN", "HUM", "IB", "IE", "INFO", "IS", "ITAL", "JAPN",
-        "JOUR", "JS", "KOR", "LA", "LAS", "LAST", "LAT", "LAW", "LER", "LGLS",
-        "LING", "LLS", "MATH", "MBA", "MCB", "MDIA", "ME", "MILS", "MSE", "MUS",
-        "NEUR", "NPRE", "NRES", "NS", "PATH", "PHIL", "PHYS", "PLPA", "POL", "PORT",
-        "PS", "PSYC", "REES", "RHET", "RLST", "RST", "RUSS", "SBC", "SCAN", "SE",
-        "SLAV", "SOC", "SOCW", "SPAN", "SPED", "STAT", "TE", "THEA", "TRST", "TSM",
-        "UP", "VCM", "VM", "WLOF", "WRIT", "YDSH", "ECE", "ENG"
+        "CS",      # Computer Science
+        "ECE",     # Electrical and Computer Engineering
+        "ME",      # Mechanical Engineering
+        "MATH",    # Mathematics
+        "STAT",    # Statistics
+        "PHYS",    # Physics
+        "CHEM",    # Chemistry
+        "ECON",    # Economics
+        "CWL",     # Comparative and World Literature
+        "INFO",    # Informatics
+        "BADM",    # Business Administration
+        "ENG",     # General Engineering
+        "TAM"      # Theoretical and Applied Mechanics
     ]
 
     print(f"Fetching courses from UIUC Course Explorer API for {semester} {year}...")
@@ -46,6 +47,9 @@ def fetch_uiuc_courses():
         try:
             url = f"https://courses.illinois.edu/cisapp/explorer/schedule/{year}/{semester}/{dept}.xml"
             print(f"Fetching {dept} courses from {url}")
+
+            # Add delay to avoid rate limiting
+            #time.sleep(0.5)
 
             response = requests.get(url, timeout=10)
 
@@ -60,6 +64,7 @@ def fetch_uiuc_courses():
                         # Get course details
                         try:
                             detail_url = f"https://courses.illinois.edu/cisapp/explorer/schedule/{year}/{semester}/{dept}/{course_id_elem}.xml"
+                            time.sleep(0.2)  # Small delay between course detail requests
                             detail_response = requests.get(detail_url, timeout=10)
 
                             if detail_response.status_code == 200:
