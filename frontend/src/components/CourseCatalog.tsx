@@ -49,7 +49,7 @@ function CourseCatalog({ courses, departments, semesters, onAddCourse }: CourseC
   return (
     <div className="course-catalog">
       <div className="catalog-header">
-        <h2>Course Catalog</h2>
+        <h2>Course Catalog ({courses.length} total courses, {filteredCourses.length} shown)</h2>
         <div className="filters">
           <input
             type="text"
