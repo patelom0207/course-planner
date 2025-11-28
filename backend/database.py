@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Course
+import requests
+import xml.etree.ElementTree as ET
 
 DATABASE_URL = "sqlite:///./course_planner.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
@@ -13,6 +15,86 @@ def get_db():
     finally:
         db.close()
 
+def fetch_uiuc_courses():
+    """Fetch courses from UIUC Course Explorer API"""
+    courses = []
+
+    # Use current year and fall semester
+    year = "2025"
+    semester = "fall"
+
+    # List of popular departments to fetch
+    departments = ["CS", "MATH", "PHYS", "ECE", "STAT", "CHEM", "BIO", "ECON", "PSYC", "ENG"]
+
+    print(f"Fetching courses from UIUC Course Explorer API for {semester} {year}...")
+
+    for dept in departments:
+        try:
+            url = f"https://courses.illinois.edu/cisapp/explorer/schedule/{year}/{semester}/{dept}.xml"
+            print(f"Fetching {dept} courses from {url}")
+
+            response = requests.get(url, timeout=10)
+
+            if response.status_code == 200:
+                root = ET.fromstring(response.content)
+
+                # Parse XML and extract courses
+                for course_elem in root.findall('.//course'):
+                    course_id_elem = course_elem.get('id')
+
+                    if course_id_elem:
+                        # Get course details
+                        try:
+                            detail_url = f"https://courses.illinois.edu/cisapp/explorer/schedule/{year}/{semester}/{dept}/{course_id_elem}.xml"
+                            detail_response = requests.get(detail_url, timeout=10)
+
+                            if detail_response.status_code == 200:
+                                detail_root = ET.fromstring(detail_response.content)
+
+                                # Extract course information
+                                title = detail_root.findtext('label', '').strip()
+                                description = detail_root.findtext('description', '').strip()
+                                credit_hours = detail_root.findtext('creditHours', '3')
+
+                                # Parse credit hours (can be a range like "3 or 4")
+                                try:
+                                    credits = int(credit_hours.split()[0])
+                                except (ValueError, IndexError):
+                                    credits = 3
+
+                                # Determine course level from course number
+                                try:
+                                    level = int(course_id_elem[0]) * 100
+                                except (ValueError, IndexError):
+                                    level = 100
+
+                                course_data = {
+                                    "course_id": f"{dept}{course_id_elem}",
+                                    "title": title[:255] if title else f"{dept} {course_id_elem}",
+                                    "credits": credits,
+                                    "department": dept,
+                                    "level": level,
+                                    "description": description[:500] if description else None,
+                                    "prerequisites": None  # Would need additional parsing
+                                }
+
+                                courses.append(course_data)
+                                print(f"  Added: {course_data['course_id']} - {course_data['title']}")
+
+                        except Exception as e:
+                            print(f"  Error fetching details for {dept}{course_id_elem}: {e}")
+                            continue
+
+            else:
+                print(f"  Failed to fetch {dept}: Status {response.status_code}")
+
+        except Exception as e:
+            print(f"  Error fetching {dept}: {e}")
+            continue
+
+    print(f"\nTotal courses fetched: {len(courses)}")
+    return courses
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 
@@ -20,177 +102,56 @@ def init_db():
 
     existing_courses = db.query(Course).first()
     if existing_courses:
+        print("Database already contains courses. Skipping initialization.")
         db.close()
         return
 
-    uiuc_courses = [
-        {
-            "course_id": "CS101",
-            "title": "Intro to Computing",
-            "credits": 3,
-            "department": "CS",
-            "level": 100,
-            "description": "Introduction to computer science concepts and programming",
-            "prerequisites": None
-        },
-        {
-            "course_id": "CS125",
-            "title": "Intro to Computer Science",
-            "credits": 4,
-            "department": "CS",
-            "level": 100,
-            "description": "Introduction to programming and computer science",
-            "prerequisites": None
-        },
-        {
-            "course_id": "CS173",
-            "title": "Discrete Structures",
-            "credits": 3,
-            "department": "CS",
-            "level": 100,
-            "description": "Discrete mathematical structures and foundations",
-            "prerequisites": None
-        },
-        {
-            "course_id": "CS225",
-            "title": "Data Structures",
-            "credits": 4,
-            "department": "CS",
-            "level": 200,
-            "description": "Fundamental data structures and algorithms",
-            "prerequisites": "CS125"
-        },
-        {
-            "course_id": "CS233",
-            "title": "Computer Architecture",
-            "credits": 4,
-            "department": "CS",
-            "level": 200,
-            "description": "Digital logic design and computer organization",
-            "prerequisites": "CS125"
-        },
-        {
-            "course_id": "CS340",
-            "title": "Introduction to Computer Systems",
-            "credits": 3,
-            "department": "CS",
-            "level": 300,
-            "description": "Systems programming and operating systems concepts",
-            "prerequisites": "CS225,CS233"
-        },
-        {
-            "course_id": "CS374",
-            "title": "Algorithms and Models of Computation",
-            "credits": 4,
-            "department": "CS",
-            "level": 300,
-            "description": "Algorithm design and computational complexity",
-            "prerequisites": "CS173,CS225"
-        },
-        {
-            "course_id": "CS411",
-            "title": "Database Systems",
-            "credits": 3,
-            "department": "CS",
-            "level": 400,
-            "description": "Database design, query languages, and implementation",
-            "prerequisites": "CS225"
-        },
-        {
-            "course_id": "CS421",
-            "title": "Programming Languages and Compilers",
-            "credits": 3,
-            "department": "CS",
-            "level": 400,
-            "description": "Programming language concepts and compiler design",
-            "prerequisites": "CS374"
-        },
-        {
-            "course_id": "MATH220",
-            "title": "Calculus",
-            "credits": 5,
-            "department": "MATH",
-            "level": 200,
-            "description": "Differential and integral calculus",
-            "prerequisites": None
-        },
-        {
-            "course_id": "MATH231",
-            "title": "Calculus II",
-            "credits": 3,
-            "department": "MATH",
-            "level": 200,
-            "description": "Sequences, series, and multivariable calculus",
-            "prerequisites": "MATH220"
-        },
-        {
-            "course_id": "MATH241",
-            "title": "Calculus III",
-            "credits": 4,
-            "department": "MATH",
-            "level": 200,
-            "description": "Multivariable calculus and vector analysis",
-            "prerequisites": "MATH231"
-        },
-        {
-            "course_id": "PHYS211",
-            "title": "University Physics: Mechanics",
-            "credits": 4,
-            "department": "PHYS",
-            "level": 200,
-            "description": "Calculus-based mechanics",
-            "prerequisites": "MATH220"
-        },
-        {
-            "course_id": "PHYS212",
-            "title": "University Physics: Elec & Mag",
-            "credits": 4,
-            "department": "PHYS",
-            "level": 200,
-            "description": "Electricity and magnetism",
-            "prerequisites": "PHYS211,MATH231"
-        },
-        {
-            "course_id": "ECE110",
-            "title": "Introduction to Electronics",
-            "credits": 3,
-            "department": "ECE",
-            "level": 100,
-            "description": "Basic circuit analysis and electronics",
-            "prerequisites": None
-        },
-        {
-            "course_id": "ECE220",
-            "title": "Computer Systems & Programming",
-            "credits": 4,
-            "department": "ECE",
-            "level": 200,
-            "description": "C programming and computer organization",
-            "prerequisites": "ECE110"
-        },
-        {
-            "course_id": "STAT400",
-            "title": "Statistics and Probability I",
-            "credits": 4,
-            "department": "STAT",
-            "level": 400,
-            "description": "Probability theory and statistical inference",
-            "prerequisites": "MATH231"
-        },
-        {
-            "course_id": "ENG100",
-            "title": "Engineering Orientation",
-            "credits": 0,
-            "department": "ENG",
-            "level": 100,
-            "description": "Introduction to engineering disciplines",
-            "prerequisites": None
-        }
-    ]
+    # Fetch courses from UIUC API
+    try:
+        uiuc_courses = fetch_uiuc_courses()
+
+        if not uiuc_courses:
+            print("No courses fetched from API, using fallback sample data...")
+            # Fallback to sample courses if API fails
+            uiuc_courses = [
+                {
+                    "course_id": "CS101",
+                    "title": "Intro to Computing",
+                    "credits": 3,
+                    "department": "CS",
+                    "level": 100,
+                    "description": "Introduction to computer science concepts and programming",
+                    "prerequisites": None
+                },
+                {
+                    "course_id": "CS125",
+                    "title": "Intro to Computer Science",
+                    "credits": 4,
+                    "department": "CS",
+                    "level": 100,
+                    "description": "Introduction to programming and computer science",
+                    "prerequisites": None
+                },
+            ]
+    except Exception as e:
+        print(f"Error fetching courses from API: {e}")
+        print("Using fallback sample data...")
+        uiuc_courses = [
+            {
+                "course_id": "CS101",
+                "title": "Intro to Computing",
+                "credits": 3,
+                "department": "CS",
+                "level": 100,
+                "description": "Introduction to computer science concepts and programming",
+                "prerequisites": None
+            },
+        ]
 
     for course_data in uiuc_courses:
         course = Course(**course_data)
         db.add(course)
 
     db.commit()
+    print(f"Successfully added {len(uiuc_courses)} courses to database!")
     db.close()
