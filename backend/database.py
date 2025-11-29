@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Course
+from models import (
+    Base, Course, Semester, Major, Minor, StudentProfile,
+    DegreePlan, PlannedSemester
+)
 import requests
 import xml.etree.ElementTree as ET
 import time
@@ -28,17 +31,12 @@ def fetch_uiuc_courses():
     departments = [
         "CS",      # Computer Science
         "ECE",     # Electrical and Computer Engineering
-        "ME",      # Mechanical Engineering
         "MATH",    # Mathematics
         "STAT",    # Statistics
         "PHYS",    # Physics
-        "CHEM",    # Chemistry
         "ECON",    # Economics
         "CWL",     # Comparative and World Literature
-        "INFO",    # Informatics
-        "BADM",    # Business Administration
         "ENG",     # General Engineering
-        "TAM"      # Theoretical and Applied Mechanics
     ]
 
     print(f"Fetching courses from UIUC Course Explorer API for {semester} {year}...")
@@ -49,7 +47,7 @@ def fetch_uiuc_courses():
             print(f"Fetching {dept} courses from {url}")
 
             # Add delay to avoid rate limiting
-            #time.sleep(0.5)
+            time.sleep(0.5)
 
             response = requests.get(url, timeout=10)
 

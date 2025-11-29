@@ -4,13 +4,14 @@ import { api } from './api';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import CourseCatalog from './components/CourseCatalog';
+import DegreePlanner from './components/DegreePlanner';
 import './App.css';
 
 function App() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [semesters, setSemesters] = useState<Semester[]>([]);
   const [departments, setDepartments] = useState<string[]>([]);
-  const [activeView, setActiveView] = useState<'dashboard' | 'catalog'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'catalog' | 'planner'>('dashboard');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -102,12 +103,17 @@ function App() {
             onAddCourse={handleAddCourse}
             onRemoveCourse={handleRemoveCourse}
           />
-        ) : (
+        ) : activeView === 'catalog' ? (
           <CourseCatalog
             courses={courses}
             departments={departments}
             semesters={semesters}
             onAddCourse={handleAddCourse}
+          />
+        ) : (
+          <DegreePlanner
+            courses={courses}
+            semesters={semesters}
           />
         )}
       </main>

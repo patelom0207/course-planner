@@ -1,4 +1,8 @@
-import type { Course, Semester, SemesterCreate, CourseAdd } from './types';
+import type {
+  Course, Semester, SemesterCreate, CourseAdd,
+  Major, Minor, StudentProfile, StudentProfileCreate,
+  DegreePlan, GenerateDegreePlanRequest
+} from './types';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -75,6 +79,57 @@ export const api = {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete semester');
+    return response.json();
+  },
+
+  // Degree planning APIs
+  async getAllMajors(): Promise<Major[]> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/majors`);
+    if (!response.ok) throw new Error('Failed to fetch majors');
+    return response.json();
+  },
+
+  async getAllMinors(): Promise<Minor[]> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/minors`);
+    if (!response.ok) throw new Error('Failed to fetch minors');
+    return response.json();
+  },
+
+  async createStudentProfile(profileData: StudentProfileCreate): Promise<StudentProfile> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/student-profile`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profileData),
+    });
+    if (!response.ok) throw new Error('Failed to create student profile');
+    return response.json();
+  },
+
+  async getStudentProfile(studentId: number): Promise<StudentProfile> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/student-profile/${studentId}`);
+    if (!response.ok) throw new Error('Failed to fetch student profile');
+    return response.json();
+  },
+
+  async getAllStudentProfiles(): Promise<StudentProfile[]> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/student-profiles`);
+    if (!response.ok) throw new Error('Failed to fetch student profiles');
+    return response.json();
+  },
+
+  async generateDegreePlan(request: GenerateDegreePlanRequest): Promise<DegreePlan> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/generate-degree-plan`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+    if (!response.ok) throw new Error('Failed to generate degree plan');
+    return response.json();
+  },
+
+  async getDegreePlan(studentId: number): Promise<DegreePlan> {
+    const response = await fetch(`${API_BASE_URL}/degree-planning/degree-plan/${studentId}`);
+    if (!response.ok) throw new Error('Failed to fetch degree plan');
     return response.json();
   },
 };

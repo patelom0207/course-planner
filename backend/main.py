@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import init_db
-from routers import courses, semesters
+from routers import courses, semesters, degree_planning
 
 app = FastAPI(title="UIUC Course Planner API")
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(courses.router, prefix="/api/courses", tags=["courses"])
 app.include_router(semesters.router, prefix="/api/semesters", tags=["semesters"])
+app.include_router(degree_planning.router, prefix="/api/degree-planning", tags=["degree-planning"])
 
 @app.on_event("startup")
 async def startup_event():

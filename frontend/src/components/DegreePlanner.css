@@ -1,0 +1,563 @@
+.degree-planner {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.degree-planner h2 {
+  margin-bottom: 1rem;
+  color: #13294b;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: #e84a27;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-back:hover {
+  text-decoration: underline;
+}
+
+/* Existing Profiles */
+.existing-profiles {
+  margin-bottom: 2rem;
+}
+
+.existing-profiles h3 {
+  color: #13294b;
+  margin-bottom: 1rem;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profile-card:hover {
+  border-color: #e84a27;
+  box-shadow: 0 4px 12px rgba(232, 74, 39, 0.1);
+  transform: translateY(-2px);
+}
+
+.profile-card h4 {
+  color: #13294b;
+  margin-bottom: 0.5rem;
+}
+
+.profile-card p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.create-new-btn {
+  width: 100%;
+  max-width: 300px;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Form */
+.profile-form {
+  max-width: 800px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #13294b;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #e84a27;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.checkbox-label:hover {
+  background-color: #f5f5f5;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.course-selection {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.course-checkbox {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.course-checkbox:last-child {
+  border-bottom: none;
+}
+
+.course-checkbox span {
+  flex: 1;
+}
+
+.error-message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Profile Summary */
+.profile-summary {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-summary h2 {
+  color: #13294b;
+  margin-bottom: 1rem;
+}
+
+.profile-info {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.profile-info p {
+  margin: 0;
+  color: #666;
+}
+
+.profile-info strong {
+  color: #13294b;
+}
+
+/* Degree Plan */
+.degree-plan {
+  margin-top: 2rem;
+}
+
+.degree-plan h3 {
+  color: #13294b;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.semesters-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.planned-semester {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.planned-semester:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.semester-header {
+  background: linear-gradient(135deg, #13294b 0%, #1a3a5c 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.semester-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.credit-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.course-list {
+  padding: 1rem;
+}
+
+.course-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.course-item:last-child {
+  border-bottom: none;
+}
+
+.course-item:hover {
+  background-color: #f9f9f9;
+}
+
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.course-header strong {
+  color: #e84a27;
+  font-size: 0.95rem;
+}
+
+.course-header .credits {
+  color: #666;
+  font-size: 0.85rem;
+  background: #f0f0f0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.course-title {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.regenerate-btn {
+  margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .degree-planner {
+    padding: 1rem;
+  }
+
+  .profiles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .semesters-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Info and Warning Boxes */
+.info-box {
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.info-box h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2e7d32;
+}
+
+.info-box p {
+  margin: 0;
+  color: #1b5e20;
+}
+
+.warning-box {
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.warning-box h4 {
+  margin: 0 0 0.5rem 0;
+  color: #e65100;
+}
+
+.warning-box p {
+  margin: 0;
+  color: #e65100;
+}
+
+/* AP Exams Grid */
+.ap-exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ap-exam-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.ap-exam-card:has(input:checked) {
+  border-color: #e84a27;
+  background: #fff5f3;
+}
+
+.ap-exam-label {
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  align-items: flex-start;
+}
+
+.ap-exam-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ap-exam-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.ap-exam-info strong {
+  color: #13294b;
+  font-size: 1rem;
+}
+
+.ap-score {
+  color: #e84a27;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.ap-equivalent {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Dual Enrollment */
+.de-courses-list {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.de-courses-list h4 {
+  margin: 0 0 1rem 0;
+  color: #13294b;
+}
+
+.de-course-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.de-course-item:last-child {
+  margin-bottom: 0;
+}
+
+.de-equivalent {
+  color: #e84a27;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.btn-remove {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-remove:hover {
+  background: #d32f2f;
+}
+
+.de-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Review Summary */
+.review-summary {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.review-section {
+  margin-bottom: 2rem;
+}
+
+.review-section:last-child {
+  margin-bottom: 0;
+}
+
+.review-section h3 {
+  color: #13294b;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.review-section p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.total-credits {
+  margin-top: 1rem !important;
+  padding-top: 1rem;
+  border-top: 2px solid #e0e0e0;
+  font-size: 1.1rem;
+}
+
+.total-credits strong {
+  color: #13294b;
+}
+
+/* Button Groups */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ap-exams-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+}
