@@ -36,7 +36,8 @@ def fetch_uiuc_courses():
         "PHYS",    # Physics
         "ECON",    # Economics
         "CWL",     # Comparative and World Literature
-        "ENG",     # General Engineering
+        "MACS",    # Media and Cinema Studies
+        "ENG"      # General Engineering
     ]
 
     print(f"Fetching courses from UIUC Course Explorer API for {semester} {year}...")
