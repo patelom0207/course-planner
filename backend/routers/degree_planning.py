@@ -162,17 +162,49 @@ def generate_degree_plan(request: GenerateDegreePlanRequest, db: Session = Depen
     completed_ids = {c.course_id for c in student.completed_courses}
     remaining_courses = [c for c in all_required if c.course_id not in completed_ids]
 
-    # Sort courses by level (lower level first)
-    remaining_courses.sort(key=lambda c: c.level)
+    # Build prerequisite map
+    prereq_map = {}
+    for course in all_required:
+        prereq_map[course.course_id] = []
+        if course.prerequisites:
+            # Parse prerequisites (stored as JSON array or comma-separated)
+            import json
+            try:
+                prereqs = json.loads(course.prerequisites)
+                if isinstance(prereqs, list):
+                    prereq_map[course.course_id] = prereqs
+            except:
+                # Fallback to comma-separated
+                prereq_map[course.course_id] = [p.strip() for p in course.prerequisites.split(',') if p.strip()]
 
-    # Generate semesters
+    # Schedule courses semester by semester using prerequisite-aware algorithm
     semester_names = ["Fall", "Spring"]
     semester_order = 1
     year = request.start_year
     semester_index = 0 if request.start_semester == "Fall" else 1
 
-    for i in range(0, len(remaining_courses), request.courses_per_semester):
-        semester_courses_batch = remaining_courses[i:i + request.courses_per_semester]
+    scheduled_courses = set(completed_ids)  # Track all completed/scheduled courses
+    remaining = {c.course_id: c for c in remaining_courses}
+
+    while remaining:
+        # Find courses that can be taken this semester (prerequisites met)
+        available = []
+        for course_id, course in remaining.items():
+            prereqs = prereq_map.get(course_id, [])
+            if all(prereq in scheduled_courses for prereq in prereqs):
+                available.append(course)
+
+        if not available:
+            # No courses available - either cycle in prereqs or all remaining courses need something
+            # Just take lowest level courses to break the deadlock
+            available = sorted(remaining.values(), key=lambda c: c.level)[:request.courses_per_semester]
+
+        # Sort available courses by level (lower level first) and take up to courses_per_semester
+        available.sort(key=lambda c: c.level)
+        semester_courses_batch = available[:request.courses_per_semester]
+
+        if not semester_courses_batch:
+            break  # No more courses to schedule
 
         semester_name = f"{semester_names[semester_index]} {year}"
 
@@ -193,10 +225,12 @@ def generate_degree_plan(request: GenerateDegreePlanRequest, db: Session = Depen
                     course_id=course.course_id
                 )
             )
+            scheduled_courses.add(course.course_id)
+            remaining.pop(course.course_id, None)
 
         # Move to next semester
         semester_index = (semester_index + 1) % 2
-        if semester_index == 0:
+        if semester_index == 1:  # Moving from Fall to Spring increments the year
             year += 1
         semester_order += 1
 

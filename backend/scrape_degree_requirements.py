@@ -104,54 +104,71 @@ def scrape_cs_degree_requirements(url: str) -> Dict:
     current_group_title = None
     current_group_courses = set()
 
+    # Sections that contain REQUIRED courses (not just options)
+    REQUIRED_SECTIONS = [
+        'Computer Science Technical Core',
+        'Foundational Mathematics and Science',
+        'Orientation and Professional Development'
+    ]
+
+    # Sections to skip (these list options, not requirements)
+    SKIP_SECTIONS = [
+        'Technical Electives',
+        'Advanced Electives',
+        'Free Electives',
+        'General Education Requirements',  # Too many options, not fixed requirements
+        'Graduation Requirements',
+        'Technical GPA',
+        'University Requirements'
+    ]
+
     for element in content_elements:
         # Check if this is a section header (p with strong tag)
         if element.name == 'p':
             strong_tag = element.find('strong')
             if strong_tag:
                 # This is a new section header
-                # Save previous group if it has courses
+                # Save previous group if it has courses and is a required section
                 if current_group_title and current_group_courses:
-                    groups.append({
-                        "title": current_group_title,
-                        "courses": sorted(list(current_group_courses))
-                    })
-                    all_courses.update(current_group_courses)
-                    print(f"  Group '{current_group_title}': {len(current_group_courses)} courses")
+                    if current_group_title in REQUIRED_SECTIONS:
+                        groups.append({
+                            "title": current_group_title,
+                            "courses": sorted(list(current_group_courses))
+                        })
+                        all_courses.update(current_group_courses)
+                        print(f"  Group '{current_group_title}': {len(current_group_courses)} courses")
+                    else:
+                        print(f"  Skipping '{current_group_title}' (not a required section)")
 
                 # Start new group
                 current_group_title = strong_tag.get_text(strip=True)
                 current_group_courses = set()
             else:
-                # Regular paragraph - extract courses
-                text = element.get_text()
-                courses = extract_course_codes(text, element)
-                if current_group_title:
+                # Regular paragraph - extract courses only if in required section
+                if current_group_title and current_group_title in REQUIRED_SECTIONS:
+                    text = element.get_text()
+                    courses = extract_course_codes(text, element)
                     current_group_courses.update(courses)
 
         # Tables and lists contain course information
         elif element.name in ['table', 'ul', 'ol']:
-            text = element.get_text()
-            courses = extract_course_codes(text, element)
-            if current_group_title:
+            # Only extract if in a required section
+            if current_group_title and current_group_title in REQUIRED_SECTIONS:
+                text = element.get_text()
+                courses = extract_course_codes(text, element)
                 current_group_courses.update(courses)
-            elif courses:
-                # Courses without a group - add to "Core Requirements"
-                if not any(g['title'] == 'Core Requirements' for g in groups):
-                    groups.append({
-                        "title": "Core Requirements",
-                        "courses": sorted(list(courses))
-                    })
-                    all_courses.update(courses)
 
-    # Don't forget to add the last group
+    # Don't forget to add the last group if it's required
     if current_group_title and current_group_courses:
-        groups.append({
-            "title": current_group_title,
-            "courses": sorted(list(current_group_courses))
-        })
-        all_courses.update(current_group_courses)
-        print(f"  Group '{current_group_title}': {len(current_group_courses)} courses")
+        if current_group_title in REQUIRED_SECTIONS:
+            groups.append({
+                "title": current_group_title,
+                "courses": sorted(list(current_group_courses))
+            })
+            all_courses.update(current_group_courses)
+            print(f"  Group '{current_group_title}': {len(current_group_courses)} courses")
+        else:
+            print(f"  Skipping '{current_group_title}' (not a required section)")
 
     # If still no groups found, extract all courses
     if not groups:
