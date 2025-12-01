@@ -14,7 +14,7 @@
 .dashboard-header h2 {
   margin: 0;
   font-size: 1.8rem;
-  color: #333;
+  color: #1a1a1a;
 }
 
 .semester-form {
@@ -22,21 +22,31 @@
   gap: 1rem;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.semester-form input {
+.semester-select {
   flex: 1;
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  background: #ffffff;
+  color: #333;
+  cursor: pointer;
 }
 
-.semester-form input:focus {
+.semester-select:focus {
   outline: none;
   border-color: #4A90E2;
+}
+
+.semester-select option {
+  color: #333;
+  background: #ffffff;
 }
 
 .empty-state {

@@ -20,14 +20,23 @@ function Dashboard({
   onAddCourse,
   onRemoveCourse,
 }: DashboardProps) {
-  const [newSemesterName, setNewSemesterName] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('');
   const [showForm, setShowForm] = useState(false);
+
+  // Generate semester options
+  const currentYear = new Date().getFullYear();
+  const semesterOptions = [];
+  for (let year = currentYear; year <= currentYear + 5; year++) {
+    semesterOptions.push(`Spring ${year}`);
+    semesterOptions.push(`Summer ${year}`);
+    semesterOptions.push(`Fall ${year}`);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newSemesterName.trim()) {
-      onCreateSemester(newSemesterName.trim());
-      setNewSemesterName('');
+    if (selectedSemester) {
+      onCreateSemester(selectedSemester);
+      setSelectedSemester('');
       setShowForm(false);
     }
   };
@@ -43,14 +52,22 @@ function Dashboard({
 
       {showForm && (
         <form onSubmit={handleSubmit} className="semester-form">
-          <input
-            type="text"
-            value={newSemesterName}
-            onChange={(e) => setNewSemesterName(e.target.value)}
-            placeholder="e.g., Fall 2025"
+          <select
+            value={selectedSemester}
+            onChange={(e) => setSelectedSemester(e.target.value)}
+            className="semester-select"
             autoFocus
-          />
-          <button type="submit" className="btn-primary">Create</button>
+          >
+            <option value="">Select a semester...</option>
+            {semesterOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <button type="submit" className="btn-primary" disabled={!selectedSemester}>
+            Create
+          </button>
         </form>
       )}
 
