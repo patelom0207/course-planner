@@ -1,8 +1,8 @@
 import './Navbar.css';
 
 interface NavbarProps {
-  activeView: 'dashboard' | 'catalog' | 'planner';
-  onNavigate: (view: 'dashboard' | 'catalog' | 'planner') => void;
+  activeView: 'dashboard' | 'catalog' | 'planner' | 'about';
+  onNavigate: (view: 'dashboard' | 'catalog' | 'planner' | 'about') => void;
   onLogin: () => void;
 }
 
@@ -44,7 +44,15 @@ function Navbar({ activeView, onNavigate, onLogin }: NavbarProps) {
               Degree Planner
             </a>
           </li>
-          <li><a href="#">About</a></li>
+          <li>
+            <a
+              href="#"
+              className={activeView === 'about' ? 'active' : ''}
+              onClick={(e) => { e.preventDefault(); onNavigate('about'); }}
+            >
+              About
+            </a>
+          </li>
         </ul>
       </nav>
       <button onClick={onLogin}>

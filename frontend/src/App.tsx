@@ -5,13 +5,14 @@ import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import CourseCatalog from './components/CourseCatalog';
 import DegreePlanner from './components/DegreePlanner';
+import About from './components/About';
 import './App.css';
 
 function App() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [semesters, setSemesters] = useState<Semester[]>([]);
   const [departments, setDepartments] = useState<string[]>([]);
-  const [activeView, setActiveView] = useState<'dashboard' | 'catalog' | 'planner'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'catalog' | 'planner' | 'about'>('dashboard');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -110,11 +111,13 @@ function App() {
             semesters={semesters}
             onAddCourse={handleAddCourse}
           />
-        ) : (
+        ) : activeView === 'planner' ? (
           <DegreePlanner
             courses={courses}
             semesters={semesters}
           />
+        ) : (
+          <About />
         )}
       </main>
     </div>
